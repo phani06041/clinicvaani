@@ -99,7 +99,7 @@ async function startCall() {
     textOnly = true; capNode = null; capCtx = null; micStream = null;
   }
 
-  ws = new WebSocket(wsBase + '/ws/call');
+  ws = new WebSocket(wsBase + '/ws/call' + (chosenLang ? '?lang=' + encodeURIComponent(chosenLang) : ''));
   ws.binaryType = 'arraybuffer';
   ws.onopen = () => {
     setState(textOnly ? 'connected · typing' : 'connected', 'live');
@@ -171,3 +171,17 @@ $('typeForm').onsubmit = (e) => {
 fetch('/api/config').then((r) => r.json()).then((c) => {
   if (!c.has_key) { setState('unavailable', 'err'); addBubble('system', 'The clinic line is not configured (GEMINI_API_KEY missing).'); }
 });
+
+// ---------------------------------------------------------------- preferred language
+let chosenLang = '';
+try { chosenLang = localStorage.getItem('cv_lang') || ''; } catch { /* storage unavailable */ }
+function paintLangs() {
+  document.querySelectorAll('#langs button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.lang === chosenLang)));
+}
+document.getElementById('langs')?.addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b || ws) return; // language is fixed once a call starts
+  chosenLang = b.dataset.lang;
+  try { localStorage.setItem('cv_lang', chosenLang); } catch { /* ignore */ }
+  paintLangs();
+});
+paintLangs();

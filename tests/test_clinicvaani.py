@@ -280,3 +280,11 @@ def test_verification_code_reaches_only_the_caller_screen():
     to_model = sess.tool_responses[0].response["result"]
     assert "_deliver_sms" not in to_model and code not in json.dumps(to_model)
     assert code not in json.dumps(seen_by_staff)
+
+
+def test_language_choice_shapes_opening():
+    from app import prompts
+    hi = prompts.system_instruction("hindi")
+    assert "caller chose Hindi" in hi and prompts.LANGUAGES["Hindi"] in hi
+    ask = prompts.system_instruction("klingon")  # unknown -> ask
+    assert "did not choose a language" in ask and "Which language" in ask

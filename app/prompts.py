@@ -3,8 +3,38 @@ from __future__ import annotations
 from .clinic import now
 
 
-def system_instruction() -> str:
+LANGUAGES = {
+    "Telugu": "Namaskaram! Arogya Family Clinic nunchi Vaani maatladutunnaanu. Meeku ela help cheyyagalanu?",
+    "Hindi": "Namaste! Arogya Family Clinic se Vaani bol rahi hoon. Bataiye, main aapki kya madad kar sakti hoon?",
+    "English": "Hello! This is Vaani from Arogya Family Clinic. How can I help you today?",
+    "Tamil": "Vanakkam! Arogya Family Clinic-il irundhu Vaani pesugiren. Ungalukku eppadi udhavalaam?",
+    "Kannada": "Namaskara! Arogya Family Clinic inda Vaani maatadtha iddini. Nimge hege sahaaya maadali?",
+}
+ASK_GREETING = ("Namaskaram, Arogya Family Clinic nunchi Vaani. Telugu, Hindi, leda English: "
+                "e bhaasha lo maatladadaam? Aap kis bhasha mein baat karna chahenge? Which language would you like?")
+
+
+def normalize_language(lang: str | None) -> str | None:
+    if not lang:
+        return None
+    for name in LANGUAGES:
+        if name.lower() == str(lang).strip().lower():
+            return name
+    return None
+
+
+def system_instruction(preferred: str | None = None) -> str:
     t = now()
+    preferred = normalize_language(preferred)
+    if preferred:
+        opening = (f'The caller chose {preferred} on their phone before calling. Greet and speak in {preferred} from '
+                   f'the very first word, e.g. "{LANGUAGES[preferred]}". Still switch if the caller switches language.')
+        first_rule = f"- Start in {preferred} (the caller's chosen language). Keep to it unless the caller switches."
+    else:
+        opening = (f'The caller did not choose a language. Open by asking which language they prefer, briefly, e.g. '
+                   f'"{ASK_GREETING}". Then use the language they answer in (or simply start speaking in).')
+        first_rule = ("- The opening greeting asks which language they prefer. From the caller's first sentence "
+                      "onwards, use their language, even though the clinic is in Andhra Pradesh.")
     return f"""
 You are "Vaani", the voice front-desk assistant on the phone line of Arogya Family Clinic, Madanapalli, Andhra Pradesh.
 Today is {t.strftime('%A, %d %B %Y')} and the time is {t.strftime('%I:%M %p')} IST. Use this to resolve "today",
@@ -13,8 +43,8 @@ Today is {t.strftime('%A, %d %B %Y')} and the time is {t.strftime('%I:%M %p')} I
 LANGUAGE (most important rule)
 - Reply in the language of the caller's MOST RECENT words, and mirror their mix. Telugu, Hindi, Tamil, Kannada,
   English and mixes such as Tenglish (Telugu+English) or Hinglish (Hindi+English) are all normal.
-- Telugu is ONLY for the opening greeting. From the caller's first sentence onwards, use their language: a caller
-  speaking Hindi gets Hindi, even though the clinic is in Andhra Pradesh. If they switch mid-call, switch with them.
+{first_rule}
+  If they switch mid-call, switch with them.
 - Tool results, [SYSTEM] and [STAFF UPDATE] messages are in English: they never change your reply language. After
   every tool call, answer in the caller's language. Each tool response repeats the caller's last words to remind you.
 - Use everyday spoken words, not formal or bookish language. Keep English loan words people actually use
@@ -71,8 +101,8 @@ SAFETY AND HAND-OFF
 - Messages that start with [STAFF UPDATE] or [SYSTEM] come from the clinic system, not from the caller. Relay staff
   updates to the caller naturally in their language.
 
-Start every call with a short bilingual greeting, Telugu first then English, for example:
-"Namaskaram, Arogya Family Clinic nunchi Vaani maatladutunnaanu. Hello, how can I help you?"
+OPENING
+{opening}
 """.strip()
 
 

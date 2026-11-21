@@ -129,7 +129,7 @@ function onOpsEvent(ev) {
       delete pending[ev.id];
       break;
     }
-    case 'call_started': monitorFor(ev.call_id); timelineAdd(`📞 ${esc(ev.call_id)} connected · ${esc(ev.model)}`, 'event'); break;
+    case 'call_started': monitorFor(ev.call_id).el.querySelector('.mon-state').textContent = 'on call · ' + (ev.language === 'ask' ? 'language: ask' : ev.language + ' chosen'); timelineAdd(`📞 ${esc(ev.call_id)} connected · ${esc(ev.model)}`, 'event'); break;
     case 'interrupted': if (monitors[ev.call_id]) { monitors[ev.call_id].last?.querySelector('.who')?.insertAdjacentHTML('beforeend', ' <span class="tag">interrupted</span>'); monitors[ev.call_id].last = null; }
       timelineAdd(`✋ Caller interrupted the agent — playback stopped`, 'event'); break;
     case 'system_injected': timelineAdd(`🧑‍⚕️ Staff update injected into the live call`, 'event'); break;

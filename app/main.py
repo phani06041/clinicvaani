@@ -61,14 +61,14 @@ def _is_model_missing(e: Exception) -> bool:
     return "404" in t or "not found" in t or "not supported" in t or "1008" in t
 
 
-async def open_live(client, stack: contextlib.AsyncExitStack):
+async def open_live(client, stack: contextlib.AsyncExitStack, language: str | None = None):
     """Connect to the first Live model this key can use; remember it for later calls."""
     global _working_model
     order = ([_working_model] if _working_model else []) + [m for m in CANDIDATE_MODELS if m != _working_model]
     failed = []
     for m in order:
         try:
-            session = await stack.enter_async_context(client.aio.live.connect(model=m, config=live_config()))
+            session = await stack.enter_async_context(client.aio.live.connect(model=m, config=live_config(language)))
         except Exception as e:  # noqa: BLE001
             if not _is_model_missing(e):
                 raise
@@ -206,12 +206,12 @@ CALLS: dict[str, Call] = {}
 
 # ------------------------------------------------------------------ Gemini
 
-def live_config():
+def live_config(language: str | None = None):
     from google.genai import types
 
     return types.LiveConnectConfig(
         response_modalities=[types.Modality.AUDIO],
-        system_instruction=types.Content(parts=[types.Part(text=prompts.system_instruction())]),
+        system_instruction=types.Content(parts=[types.Part(text=prompts.system_instruction(language))]),
         tools=[types.Tool(function_declarations=toolmod.DECLARATIONS)],
         input_audio_transcription=types.AudioTranscriptionConfig(),
         output_audio_transcription=types.AudioTranscriptionConfig(),
@@ -491,9 +491,12 @@ async def ws_call(ws: WebSocket):
     try:
         client = make_client()
         async with contextlib.AsyncExitStack() as stack:
-            session, model_used = await open_live(client, stack)
+            language = prompts.normalize_language(ws.query_params.get("lang"))
+            session, model_used = await open_live(client, stack, language)
             call.session = session
-            await call.emit({"type": "call_started", "model": model_used})
+            await call.emit({"type": "call_started", "model": model_used, "language": language or "ask"})
+            if language:
+                call.languages.add(f"{language} (chosen)")
             await session.send_realtime_input(text=prompts.CALL_CONNECTED)
             tasks = {asyncio.create_task(from_browser(call)), asyncio.create_task(from_gemini(call))}
             done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
