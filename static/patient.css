@@ -1,0 +1,25 @@
+body.patient { min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; background: linear-gradient(180deg, #0f7c6d 0, #0b5c51 260px, var(--bg) 260px); padding: 18px 12px; }
+.handset { width: 100%; max-width: 400px; background: #fff; border-radius: 26px; box-shadow: 0 12px 40px rgba(0,0,0,.14); padding: 18px 18px 14px; display: flex; flex-direction: column; gap: 12px; min-height: calc(100vh - 36px); }
+.clinic { text-align: center; }
+.clinic-name { font-weight: 700; font-size: 16px; }
+.clinic-sub { color: var(--muted); font-size: 12px; }
+.who-card { text-align: center; padding: 6px 0 2px; }
+.avatar-wrap { display: flex; justify-content: center; margin-bottom: 8px; }
+.avatar { width: 86px; height: 86px; border-radius: 50%; background: var(--teal-soft); color: var(--teal); display: grid; place-items: center; font-size: 30px; font-weight: 700; transition: box-shadow .2s; }
+.avatar.on { box-shadow: 0 0 0 8px rgba(15,124,109,.15), 0 0 0 16px rgba(15,124,109,.07); animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 12px rgba(15,124,109,.18), 0 0 0 22px rgba(15,124,109,.06); } }
+.agent-name { font-size: 20px; font-weight: 700; }
+.agent-role { color: var(--muted); font-size: 12.5px; }
+.status-line { display: flex; justify-content: center; gap: 8px; align-items: center; margin-top: 8px; }
+.timer { color: var(--muted); }
+.captions { flex: 1; min-height: 180px; max-height: 42vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: var(--bg); border-radius: 16px; padding: 10px; }
+.captions .hint { text-align: center; margin: auto 0; }
+.captions .eg { color: var(--ink); font-style: italic; }
+.captions .bubble .lang, .captions .bubble .tag { display: none; }
+.dial { display: flex; justify-content: center; }
+.call.round { width: 74px; height: 74px; border-radius: 50%; padding: 0; font-size: 12px; line-height: 1.1; }
+.democtl { border-top: 1px dashed var(--line); padding-top: 8px; font-size: 12.5px; }
+.democtl summary { cursor: pointer; color: var(--muted); }
+.democtl .row { margin-top: 8px; }
+.democtl .lbl { width: 108px; }
+.fine { text-align: center; color: var(--muted); font-size: 11px; margin: 0; }

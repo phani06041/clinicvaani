@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Arogya Family Clinic — call Vaani</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f7c6d'/><path d='M9 13v6M13 10v12M17 8v16M21 11v10M25 14v4' stroke='white' stroke-width='2.4' stroke-linecap='round'/></svg>" />
+<link rel="stylesheet" href="/static/style.css" />
+<link rel="stylesheet" href="/static/patient.css" />
+</head>
+<body class="patient">
+<div class="handset">
+  <div class="clinic">
+    <div class="clinic-name">Arogya Family Clinic</div>
+    <div class="clinic-sub">Madanapalli · Appointments &amp; insurance help</div>
+  </div>
+
+  <div class="who-card">
+    <div class="avatar-wrap"><div class="avatar" id="agentDot">వా</div></div>
+    <div class="agent-name">Vaani</div>
+    <div class="agent-role">Clinic assistant · తెలుగు · हिंदी · English</div>
+    <div class="status-line"><span class="pill" id="callState">ready</span><span class="timer mono" id="timer">00:00</span></div>
+  </div>
+
+  <div class="captions" id="transcript">
+    <p class="hint">Tap the green button and speak in your own language.<br />
+      <span class="eg">“Naaku repu doctor appointment kaavali”</span><br />
+      <span class="eg">“Mera insurance mein cover hoga?”</span></p>
+  </div>
+
+  <form id="typeForm" class="typeform">
+    <input id="typeInput" placeholder="Can't talk right now? Type here" autocomplete="off" />
+    <button aria-label="Send">➤</button>
+  </form>
+
+  <div class="dial"><button id="callBtn" class="call round" aria-label="Start or end call">Start call</button></div>
+
+  <details class="democtl">
+    <summary>Demo controls</summary>
+    <div class="row"><label class="lbl">Mic level</label><div class="meter"><div id="micLevel"></div></div></div>
+    <div class="row"><label class="lbl" for="noise">Background noise</label>
+      <input type="range" id="noise" min="0" max="100" value="0" /><span id="noiseVal" class="mono">off</span></div>
+    <div class="row stats">
+      <div><span class="k">Last response</span><span class="v mono" id="lastLat">–</span></div>
+      <div><span class="k">Interruptions</span><span class="v mono" id="intCount">0</span></div>
+      <div><span class="k">Call</span><span class="v mono" id="callId">–</span></div>
+    </div>
+  </details>
+  <p class="fine">Not for emergencies: call 108. Demo clinic with fictional data.</p>
+</div>
+<script src="/static/call.js"></script>
+</body>
+</html>

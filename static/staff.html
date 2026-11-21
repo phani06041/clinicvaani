@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ClinicVaani — front-desk console</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f7c6d'/><path d='M9 13v6M13 10v12M17 8v16M21 11v10M25 14v4' stroke='white' stroke-width='2.4' stroke-linecap='round'/></svg>" />
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo">వా</div>
+    <div>
+      <h1>ClinicVaani</h1>
+      <p>Front-desk console · Arogya Family Clinic, Madanapalli · staff only <span class="demo">fictional demo data</span></p>
+    </div>
+  </div>
+  <div class="hdr-right"><div class="whoami" id="whoami"></div><div class="metrics" id="metrics"></div></div>
+</header>
+<div id="login" class="login hidden">
+  <form id="loginForm" class="login-card">
+    <h2>Front-desk sign in</h2>
+    <p class="sub">Staff only. Patient details and approvals are behind this PIN.</p>
+    <label>Your name<input id="loginName" required maxlength="40" placeholder="e.g. Swathi" autocomplete="name" /></label>
+    <label>Clinic PIN<input id="loginPin" required type="password" inputmode="numeric" autocomplete="current-password" /></label>
+    <button class="call">Sign in</button>
+    <p class="err" id="loginErr"></p>
+  </form>
+</div>
+<div id="toast" class="toast"></div>
+
+<main id="layout" class="staff-main">
+  <!-- Front-desk console -->
+  <section class="console">
+    <div class="grid2">
+      <div class="card">
+        <div class="card-head"><h2>Live calls</h2><span class="sub">what callers and Vaani are saying</span></div>
+        <div id="monitor" class="monitor"><p class="empty">No calls yet. Open the patient line at <a href="/patient" target="_blank">/patient</a>.</p></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Agent actions</h2><span class="sub">understood → tool → result</span></div>
+        <ol class="timeline" id="timeline"><li class="empty">Tool calls appear here live.</li></ol>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-head"><h2>Staff queue</h2><span class="sub">human-in-the-loop</span></div>
+        <div id="queue"><p class="empty">No hand-offs or pre-authorizations yet.</p></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>SMS outbox</h2><span class="sub">mock channel</span></div>
+        <div id="outbox"><p class="empty">Nothing sent yet.</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>Upcoming appointments</h2>
+        <button class="ghost" id="resetBtn" title="Reset demo data">Reset demo data</button></div>
+      <table class="appts"><thead><tr><th>ID</th><th>When</th><th>Doctor</th><th>Patient</th><th>Lang</th><th>Source</th></tr></thead>
+        <tbody id="appts"></tbody></table>
+    </div>
+  </section>
+</main>
+<footer>Model <span class="mono" id="modelName">…</span> · All clinic, patient and insurer data is fictional.</footer>
+<script src="/static/console.js"></script>
+</body>
+</html>

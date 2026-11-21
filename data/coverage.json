@@ -1,0 +1,51 @@
+{
+  "_note": "Fictional demo data. Structured view of the policy documents in data/knowledge/.",
+  "procedures": {
+    "opd_consultation": ["consultation", "opd", "doctor visit", "check up", "checkup", "outpatient", "follow up", "prenatal visit"],
+    "opd_diagnostics": ["blood test", "lab test", "x-ray", "xray", "ecg", "ultrasound", "scan", "diagnostic", "thyroid test", "sugar test"],
+    "cataract_surgery": ["cataract", "eye surgery", "lens surgery", "eye operation"],
+    "knee_replacement": ["knee replacement", "joint replacement", "knee surgery", "knee operation"],
+    "maternity": ["maternity", "delivery", "pregnancy", "c-section", "caesarean", "childbirth"],
+    "physiotherapy": ["physiotherapy", "physio"],
+    "spectacles": ["spectacles", "glasses", "contact lens"]
+  },
+  "insurers": {
+    "Suraksha Health": {
+      "cashless_at_clinic": true,
+      "plans": {
+        "Gold": {
+          "opd_consultation": {"covered": true, "limit": "Rs 1,000 per visit, 6 visits per year", "waiting_months": 0, "preauth": false, "copay_pct": 0, "clause": "SUR-G 3.1"},
+          "opd_diagnostics": {"covered": true, "limit": "Rs 3,000 per policy year", "waiting_months": 0, "preauth": false, "copay_pct": 0, "clause": "SUR-G 3.3"},
+          "cataract_surgery": {"covered": true, "limit": "Rs 40,000 per eye", "waiting_months": 24, "preauth": true, "preauth_notice": "48 hours before surgery", "copay_pct": 0, "clause": "SUR-G 5.2"},
+          "knee_replacement": {"covered": true, "limit": "Rs 2,00,000 per knee", "waiting_months": 48, "preauth": true, "copay_pct": 0, "clause": "SUR-G 5.4"},
+          "maternity": {"covered": true, "limit": "Rs 50,000 normal / Rs 75,000 C-section", "waiting_months": 36, "preauth": true, "copay_pct": 0, "clause": "SUR-G 6.1"},
+          "physiotherapy": {"covered": false, "clause": "SUR-G 7.4"},
+          "spectacles": {"covered": false, "clause": "SUR-G 7.4"}
+        },
+        "Silver": {
+          "opd_consultation": {"covered": false, "clause": "SUR-S 3.1"},
+          "opd_diagnostics": {"covered": false, "clause": "SUR-S 7.4"},
+          "cataract_surgery": {"covered": true, "limit": "Rs 25,000 per eye", "waiting_months": 24, "preauth": true, "preauth_notice": "48 hours before surgery", "copay_pct": 10, "clause": "SUR-S 5.2"},
+          "knee_replacement": {"covered": true, "limit": "Rs 1,50,000 per knee", "waiting_months": 48, "preauth": true, "copay_pct": 10, "clause": "SUR-S 5.4"},
+          "maternity": {"covered": false, "clause": "SUR-S 6.1"},
+          "physiotherapy": {"covered": false, "clause": "SUR-S 7.4"},
+          "spectacles": {"covered": false, "clause": "SUR-S 7.4"}
+        }
+      }
+    },
+    "Navjeevan General": {
+      "cashless_at_clinic": false,
+      "plans": {
+        "Family Floater": {
+          "opd_consultation": {"covered": true, "limit": "Rs 500 per visit, 4 visits per year (reimbursement)", "waiting_months": 0, "preauth": false, "copay_pct": 0, "clause": "NAV-FF 3.2"},
+          "opd_diagnostics": {"covered": false, "clause": "NAV-FF 8.1"},
+          "cataract_surgery": {"covered": true, "limit": "Rs 30,000 per eye (reimbursement)", "waiting_months": 24, "preauth": false, "prior_intimation": "72 hours before surgery", "copay_pct": 0, "clause": "NAV-FF 5.1"},
+          "knee_replacement": {"covered": true, "limit": "Rs 1,80,000 per knee (reimbursement)", "waiting_months": 36, "preauth": false, "copay_pct": 0, "clause": "NAV-FF 5.3"},
+          "maternity": {"covered": true, "limit": "Rs 35,000 normal / Rs 50,000 C-section", "waiting_months": 24, "preauth": false, "copay_pct": 0, "clause": "NAV-FF 6.2"},
+          "physiotherapy": {"covered": false, "clause": "NAV-FF 8.1"},
+          "spectacles": {"covered": false, "clause": "NAV-FF 8.1"}
+        }
+      }
+    }
+  }
+}

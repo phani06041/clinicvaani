@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ClinicVaani — demo: patient line + front-desk console</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f7c6d'/><path d='M9 13v6M13 10v12M17 8v16M21 11v10M25 14v4' stroke='white' stroke-width='2.4' stroke-linecap='round'/></svg>" />
+<link rel="stylesheet" href="/static/style.css" />
+<style>
+  body { height: 100vh; display: flex; flex-direction: column; }
+  .bar { display: flex; gap: 14px; align-items: center; padding: 8px 18px; background: var(--ink); color: #fff; font-size: 13px; }
+  .bar b { font-size: 14px; } .bar a { color: #9fe3d6; } .bar .sp { flex: 1; }
+  .split { flex: 1; display: grid; grid-template-columns: 440px 1fr; min-height: 0; }
+  .pane { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--line); }
+  .pane .lab { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 6px 14px; background: #fff; border-bottom: 1px solid var(--line); }
+  iframe { flex: 1; border: 0; width: 100%; min-height: 0; }
+  @media (max-width: 900px) { .split { grid-template-columns: 1fr; grid-template-rows: 70vh 100vh; } }
+</style>
+</head>
+<body>
+<div class="bar"><b>ClinicVaani demo</b><span>Left: what the patient sees on their phone. Right: what the clinic's front desk sees.</span>
+  <span class="sp"></span><a href="/patient" target="_blank">Open patient line</a><a href="/staff" target="_blank">Open staff console</a></div>
+<div class="split">
+  <div class="pane"><div class="lab">Patient · phone</div><iframe src="/patient" allow="microphone; autoplay" title="Patient line"></iframe></div>
+  <div class="pane"><div class="lab">Clinic staff · front-desk console</div><iframe src="/staff" title="Staff console"></iframe></div>
+</div>
+</body>
+</html>
