@@ -158,6 +158,7 @@ def test_call_websocket_bridge(monkeypatch):
         assert tr["result"]["doctors"][0]["doctor_id"] == "D2"
         sess = FakeClient.last
         assert sess.tool_responses[0].id == "fc1"
+        assert "repu eye doctor kaavali" in sess.tool_responses[0].response["reply_language"]
         assert sess.sent[0]["text"].startswith("[SYSTEM]")
         assert tc.get("/api/state").status_code == 401
         assert tc.post("/api/staff/login", json={"name": "Swathi", "pin": main.STAFF_PIN}).status_code == 200

@@ -176,6 +176,8 @@ class Call:
         self.latencies: list[int] = []
         self.outcomes: set[str] = set()
         self.caller_buf = ""
+        self.last_caller_words = ""   # rolling tail of what the caller said last, to anchor reply language
+        self._caller_turn_open = False
 
     async def send(self, event: dict) -> None:
         with contextlib.suppress(Exception):
@@ -247,7 +249,10 @@ async def handle_tool_call(call: Call, tool_call) -> None:
             call.outcomes.add(OUTCOME_OF[fc.name])
         changed |= fc.name in toolmod.STATE_CHANGING
         await call.emit({"type": "tool_result", "id": fc.id, "name": fc.name, "result": result, "ms": ms})
-        responses.append(types.FunctionResponse(id=fc.id, name=fc.name, response={"result": result}))
+        responses.append(types.FunctionResponse(id=fc.id, name=fc.name, response={
+            "result": result,
+            "reply_language": f'Answer in the SAME language and mix as the caller\'s last words: "{call.last_caller_words.strip()}"',
+        }))
     await call.session.send_tool_response(function_responses=responses)
     if changed:
         hub.publish({"type": "state_changed"})
@@ -255,9 +260,13 @@ async def handle_tool_call(call: Call, tool_call) -> None:
 
 async def transcript(call: Call, role: str, text: str, typed: bool = False) -> None:
     if role == "caller":
+        call.last_caller_words = ((call.last_caller_words + text) if call._caller_turn_open else text)[-160:]
+        call._caller_turn_open = True
         lang = script_of(text)
         if lang:
             call.languages.add("English/romanised" if lang == "Latin" else lang)
+    if role == "agent":
+        call._caller_turn_open = False
     await call.emit({"type": "transcript", "role": role, "delta": text, "typed": typed})
 
 
@@ -420,7 +429,8 @@ async def preauth_decision(pa_id: str, body: Decision, staff: str = Depends(requ
         await call.inject(
             f"[STAFF UPDATE] {staff} reviewed pre-authorization {pa_id} for {row['patient_name']} "
             f"({row['procedure'].replace('_', ' ')}, {row['insurer']} {row['plan']}): {body.decision.replace('_', ' ').upper()}. "
-            f"Staff note: {body.note or 'none'}. Tell the caller now, in their language, and explain the next step.")
+            f"Staff note: {body.note or 'none'}. Tell the caller now, in the same language as their last words "
+            f"(\"{call.last_caller_words.strip()}\"), and explain the next step.")
     return {"ok": True, "preauth": row, "relayed_to_live_call": bool(call)}
 
 
