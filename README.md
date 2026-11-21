@@ -10,6 +10,8 @@ The front-desk console shows each step as it happens.
 
 > All clinic, doctor, patient and insurer data is **fictional demo data**.
 
+**Idea deck:** [docs/idea-deck.pdf](docs/idea-deck.pdf) (submitted for the idea round).
+
 ## What it shows (mapped to the PS-03 demo checklist)
 
 | Requirement | Where you see it |
